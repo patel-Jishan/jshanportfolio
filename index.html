@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jishan's | FullStackDeveloper Portfolio</title>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- bootstrap css -->
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+     <!-- bootstrap js -->
+    <script src="js/bootstrap.bundle.min.js" defer></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- googlefonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- ajax particles -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style id="app-style">
+        :root {
+            --neon-primary: #0ff;
+            --neon-secondary: #f0f;
+            --neon-accent: #0f0;
+            --dark-bg: #050a14;
+            --dark-surface: #0c1423;
+            --light-bg: #f0f4f8;
+            --light-surface: #ffffff;
+            --light-text: #2a3a4a;
+        }
+          /* pointer */
+          .cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  z-index: 2;
+  pointer-events: none;
+}
+.cursor div {
+  position: absolute;
+  display: grid;
+  place-items: center;
+}
+.cursor div div {
+  border: 1px solid #182ac8;
+  border-radius: 50%;
+  animation: pulse 2.5s linear infinite;
+  box-shadow: 0 0 50px 5px #ffaa00;
+}
+.cursor div:nth-child(1),
+.cursor div:nth-child(2) {
+  width: 100%;
+  height: 100%;
+}
+.cursor div:nth-child(1) {
+  transition: transform 0.2s ease-out;
+}
+.cursor div:nth-child(2) {
+  transition: transform 0.1s ease-out;
+}
+.cursor div:nth-child(2) div {
+  background: #fff;
+  border-radius: 50%;
+  width: 4px;
+  height: 4px;
+}
+        /* Light/Dark Mode Styles */
+        .dark-mode {
+            --bg-color: var(--dark-bg);
+            --surface-color: var(--dark-surface);
+            --text-color: #ffffff;
+            --shadow-color: rgba(0, 255, 255, 0.25);
+            --border-color: rgba(0, 255, 255, 0.5);
+        }
+
+        .light-mode {
+            --bg-color: var(--light-bg);
+            --surface-color: var(--light-surface);
+            --text-color: var(--light-text);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: rgba(42, 58, 74, 0.2);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Neon effects */
+        .neon-primary {
+            text-shadow: 0 0 5px var(--neon-primary), 0 0 10px var(--neon-primary);
+        }
+
+        .neon-secondary {
+            text-shadow: 0 0 5px var(--neon-secondary), 0 0 10px var(--neon-secondary);
+        }
+
+        .neon-accent {
+            text-shadow: 0 0 5px var(--neon-accent), 0 0 10px var(--neon-accent);
+        }
+
+        .neon-border {
+            box-shadow: 0 0 5px var(--neon-primary), inset 0 0 5px var(--neon-primary);
+            border: 1px solid var(--neon-primary);
+        }
+
+        /* Animated background */
+        .cyber-background {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: rgba(5, 10, 20, 0.9) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-link {
+            position: relative;
+            padding-bottom: 5px !important;
+            color: var(--text-color) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--neon-primary);
+            box-shadow: 0 0 8px var(--neon-primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #0ff !important;
+        }
+
+        /* Project Cards */
+        .project-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            background-color: var(--surface-color);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
+            z-index: -1;
+            transform: scale(1.03);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: inherit;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Skill bars */
+        .skill-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary));
+            box-shadow: 0 0 8px var(--neon-primary);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        /* Form inputs */
+        .cyber-input {
+            background-color: rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid var(--border-color) !important;
+            color: var(--text-color) !important;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .cyber-input:focus {
+            border-color: var(--neon-primary) !important;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4) !important;
+            background-color: rgba(0, 0, 0, 0.2) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Buttons */
+        .cyber-button {
+            background-color: transparent;
+            border: 1px solid var(--neon-primary);
+            color: var(--neon-primary);
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            z-index: 1;
+        }
+
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: var(--neon-primary);
+            transition: width 0.3s;
+            z-index: -1;
+        }
+
+        .cyber-button:hover {
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--neon-primary);
+            border-color: var(--neon-primary);
+        }
+
+        .cyber-button:hover::before {
+            width: 100%;
+        }
+
+        /* Logo animation */
+        .logo-text {
+            background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary), var(--neon-accent), var(--neon-primary));
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoAnimation 10s infinite linear;
+        }
+
+        @keyframes logoAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Canvas for 3D background */
+        #background-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--neon-primary), var(--neon-secondary));
+            border-radius: 4px;
+        }
+
+        /* Bootstrap overrides */
+        .bg-custom-surface {
+            background-color: var(--surface-color) !important;
+        }
+
+        .text-custom {
+            color: var(--text-color) !important;
+        }
+
+        .border-custom {
+            border-color: var(--border-color) !important;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .skill-icon-box {
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .learning-icon-box {
+            background: rgba(255, 0, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .contact-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(0, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--neon-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .social-icon:hover {
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        .tech-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .tech-cyan {
+            background: rgba(0, 255, 255, 0.2);
+            color: var(--neon-primary);
+        }
+
+        .tech-purple {
+            background: rgba(255, 0, 255, 0.2);
+            color: var(--neon-secondary);
+        }
+
+        .tech-green {
+            background: rgba(0, 255, 0, 0.2);
+            color: var(--neon-accent);
+        }
+
+        .tech-blue {
+            background: rgba(0, 100, 255, 0.2);
+            color: #64b5f6;
+        }
+
+        .tech-red {
+            background: rgba(255, 50, 50, 0.2);
+            color: #ef5350;
+        }
+
+        .tech-yellow {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .project-image {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .navbar-brand {
+            color: var(--text-color) !important;
+        }
+
+        .navbar-toggler {
+            border-color: var(--neon-primary);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%230ff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .footer-border {
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    
+<div id="cursor" class="cursor">
+	<div class="ring">
+		<div><!--Border--></div>
+	</div>
+	<div class="ring">
+		<div><!--Pointer--></div>		
+	</div>
+</div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fs-3 fw-bold logo-text mono" href="javascript:void(0)">Jishan's</a>
+            
+            <div class="d-flex align-items-center order-lg-2">
+                <button id="theme-toggle" class="btn btn-outline-info rounded-circle me-3">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            
+            <div class="collapse navbar-collapse order-lg-1" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-4">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item me-4">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item me-4">
+                        <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item me-4">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id="resume-link">Resume</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center position-relative cyber-background" id="hero">
+        <canvas id="background-canvas"></canvas>
+        <div class="container py-5 position-relative" style="z-index: 10;">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <h1 class="display-1 fw-bold mb-4">
+                        <span class="d-block">Jishan Patel</span>
+                        <span class="d-block text-info">Frontend</span>
+                        <span class="d-block">Developer</span>
+                    </h1>
+                    <p class="fs-4 mono neon-primary mb-4">// Crafting digital experiences through code</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#projects" class="btn cyber-button">View Projects</a>
+                        <a href="#contact" class="btn cyber-button">Get In Touch</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="position-relative">
+                        <img src="images/cartoon.png" 
+                             alt="Cyberpunk Developer Illustration" 
+                             class="img-fluid rounded shadow-none  bg-transparent">
+                        <div class="position-absolute top-0 start-0  bg-gradient rounded opacity-50" 
+                             style="background: linear-gradient(to top, transparent, #0c4a6e);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-5" id="about">
+        <div class="container py-5">
+            <h2 class="display-4 fw-bold text-center mb-5">
+                <span class="neon-primary mono">&lt;</span> About Me <span class="neon-primary mono">/&gt;</span>
+            </h2>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <div class="rounded overflow-hidden shadow-lg border border-custom">
+                            <img src="images/main.jpg " style="width: 100%;"  
+                                 alt="Developer Portrait" 
+                                 class="img-fluid">
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 bg-info rounded opacity-25 blur" 
+                             style="width: 128px; height: 128px; transform: translate(16px, 16px); filter: blur(20px);"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="fs-2 fw-bold mono mb-4">Hello, World!</h3>
+                    <p class="fs-5 mb-4">I'm a passionate Frontend Developer who loves creating elegant, responsive, and user-friendly web applications that solve real-world problems. I’ve built numerous projects that highlight my skills in HTML, CSS, and JavaScript, turning ideas into interactive digital experiences.</p>
+                    <p class="fs-5 mb-4">Currently, I’m learning full-stack development to expand my abilities and build complete web solutions. When I’m not coding, I enjoy exploring new technologies and contributing to open-source projects. I believe in continuous learning and always strive to push the limits of what’s possible on the web.</p>
+                    <div class="d-flex gap-4 pt-3">
+                        <a href="https://github.com/patel-Jishan" target="_blank" class="text-decoration-none fs-2 text-custom">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/jishan-patel-224204368/" target="_blank" class="text-decoration-none fs-2 text-custom">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="text-decoration-none fs-2 text-custom">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="py-5" id="projects">
+        <div class="container py-5">
+            <h2 class="display-4 fw-bold text-center mb-5">
+                <span class="neon-secondary mono">&lt;</span> Projects <span class="neon-secondary mono">/&gt;</span>
+            </h2>
+            <div class="row g-4">
+                <!-- Project 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i1.png" 
+                                 class="card-img-top project-image" alt="Virtual Reality Interface">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">E-commerce</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML and Inline CSS</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-cyan">HTML</span>
+                                <span class="tech-badge tech-cyan">Inline CSS</span>
+                               
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://htmlprojectsec.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/htmlprojectsec" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i5.png" 
+                                 class="card-img-top project-image" alt="AI Dashboard">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">CryptoM5</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML and Inline CSS.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-purple">HTML</span>
+                                <span class="tech-badge tech-purple">Inline CSS</span>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://htmlexamfirst.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/htmlexamfirst" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i4.png" 
+                                 class="card-img-top project-image" alt="Blockchain App">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">Fresh Cart</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML and CSS.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-green">HTML</span>
+                                <span class="tech-badge tech-green">CSS</span>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://cssexam.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/cssexam" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i6.png" 
+                             class="card-img-top project-image" alt="Social Platform">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">Courses</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML and CSS.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-blue">HTML</span>
+                                <span class="tech-badge tech-blue">CSS</span>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://maxmediaquery-2mmc.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/htmlcssmax" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i7.png" 
+                                 class="card-img-top project-image" alt="E-Commerce Platform">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">Courses2</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML and CSS.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-red">HTML</span>
+                                <span class="tech-badge tech-red">CSS</span>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://mediaquerymin.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/mediaquerymin" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i2.png" 
+                                 class="card-img-top project-image" alt="Mobile App">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">Oneder</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML,CSS & Bootstrap.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-yellow">HTML</span>
+                                <span class="tech-badge tech-yellow">CSS</span>
+                                <span class="tech-badge tech-yellow">BOOTSTRAP</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://bootstrapproject-xi.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/bootstrapproject" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                  <!-- project7 -->
+                  <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i3.png" 
+                                 class="card-img-top project-image" alt="Virtual Reality Interface">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">Bites</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML,CSS & Bootstrap</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-cyan">HTML</span>
+                                <span class="tech-badge tech-cyan">CSS</span>
+                                 <span class="tech-badge tech-cyan">BOOTSTRAP</span>
+                               
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://bootstrapexam-chi.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/bootstrapexam" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Project 8 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i8.png" 
+                                 class="card-img-top project-image" alt="AI Dashboard">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">NETFLIX</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML,CSS & Bootstrap.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-purple">HTML</span>
+                                <span class="tech-badge tech-purple">CSS</span>
+                                 <span class="tech-badge tech-purple">BOOTSTRAP</span>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://68b98734e261c47d67815d2f--snazzy-alpaca-a554f4.netlify.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/htmlnetflixproj" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Project 9 -->
+                <div class="col-lg-4 col-md-6">
+                    <article class="card project-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="images/i9.png" 
+                                 class="card-img-top project-image" alt="Blockchain App">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 text-white" 
+                                 style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                                <h5 class="card-title text-white fw-bold">Gymwebsite</h5>
+                            </div>
+                        </div>
+                        <div class="card-body bg-custom-surface">
+                            <p class="card-text mb-3">This project using HTML,CSS & Bootstrap.</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="tech-badge tech-green">HTML</span>
+                                <span class="tech-badge tech-green">CSS</span>
+                                <span class="tech-badge tech-green">BOOTSTRAP</span>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="https://gymwebsite-vbbv.vercel.app/" target="_blank" class="text-decoration-none small text-custom">
+                                    View Project <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <a href="https://github.com/patel-Jishan/Gymwebsite" target="_blank" class="text-decoration-none fs-5 text-custom">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="py-5" id="skills">
+        <div class="container py-5">
+            <h2 class="display-4 fw-bold text-center mb-5">
+                <span class="neon-accent mono">&lt;</span> Skills <span class="neon-accent mono">/&gt;</span>
+            </h2>
+            
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <h3 class="fs-2 fw-bold mb-4 mono">Frontend Technologies</h3>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>HTML5 & CSS3</span>
+                            <span class="mono">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Bootstrap</span>
+                            <span class="mono">92%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>jQuery</span>
+                            <span class="mono">88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 88%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>JavaScript(ES6+)</span>
+                            <span class="mono">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>TailwindCSS</span>
+                            <span class="mono">86%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 86%;"></div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="fs-2 fw-bold my-4 mono">Tools & Others</h3>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="skill-icon-box">
+                                <i class="fab fa-git text-info fs-1 mb-2"></i>
+                                <p class="mb-0">Git(Currently Learnig)</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="skill-icon-box">
+                                <i class="fab fa-docker text-info fs-1 mb-2"></i>
+                                <p class="mb-0">Docker(Currently Learnig)</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="skill-icon-box">
+                                <i class="fab fa-figma text-info fs-1 mb-2"></i>
+                                <p class="mb-0">Figma(Currently Learnig)</p>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h3 class="fs-2 fw-bold mb-4 mono">Backend Technologies</h3>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Node.js(Upcoming Learnig)</span>
+                            <span class="mono">88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 88%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Express.js(Upcoming Learning)</span>
+                            <span class="mono">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>MangoDB(Upcoming Learnig)</span>
+                            <span class="mono">82%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 82%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>PostgreSQL(Upcoming Learnig)</span>
+                            <span class="mono">78%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 78%;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>GraphQL(Upcoming Learning)</span>
+                            <span class="mono">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="fs-2 fw-bold my-4 mono">Currently Learning</h3>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="learning-icon-box">
+                                <i class="fas fa-palette text-danger fs-1 mb-2"></i>
+                                <p class="mb-0">Advanced CSS</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="learning-icon-box">
+                                <i class="fas fa-mobile-alt text-danger fs-1 mb-2"></i>
+                                <p class="mb-0">PWA Development(Upcoming Learnig)</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="learning-icon-box">
+                                <i class="fas fa-search text-danger fs-1 mb-2"></i>
+                                <p class="mb-0">SEO Optimization(Upcoming Learnig)</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-6 col-xl-4">
+                            <div class="learning-icon-box">
+                                <i class="fas fa-paint-brush text-danger fs-1 mb-2"></i>
+                                <p class="mb-0">UI/UX Design</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-5" id="contact">
+        <div class="container py-5">
+            <h2 class="display-4 fw-bold text-center mb-5">
+                <span class="neon-primary mono">&lt;</span> Contact Me <span class="neon-primary mono">/&gt;</span>
+            </h2>
+            
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <h3 class="fs-2 fw-bold mono mb-4">Get in Touch</h3>
+                    <p class="fs-5 mb-4">Have a project in mind or just want to say hello? I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.</p>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon-box me-3">
+                                <i class="fas fa-envelope text-info"></i>
+                            </div>
+                            <div>
+                                <h5 class="fs-5 fw-semibold mb-1">Email</h5>
+                                <p class="mb-0 text-info">jishanpatel.15072003@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon-box me-3">
+                                <i class="fas fa-map-marker-alt text-info"></i>
+                            </div>
+                            <div>
+                                <h5 class="fs-5 fw-semibold mb-1">Location</h5>
+                                <p class="mb-0">Bharuch,Gujarat</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon-box me-3">
+                                <i class="fas fa-clock text-info"></i>
+                            </div>
+                            <div>
+                                <h5 class="fs-5 fw-semibold mb-1">Working Hours</h5>
+                                <p class="mb-0">Monday - Saturday</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-3">
+                        <h5 class="fs-5 fw-semibold mb-3">Connect with me</h5>
+                        <div class="d-flex gap-3">
+                            <a href="https://github.com/patel-Jishan" target="_blank" class="social-icon text-decoration-none text-info">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/jishan-patel-224204368/" target="_blank" class="social-icon text-decoration-none text-info">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="javascript:void(0)" class="social-icon text-decoration-none text-info">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="javascript:void(0)" class="social-icon text-decoration-none text-info">
+                                <i class="fab fa-dribbble"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <form id="contact-form">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label mono small">Name</label>
+                                <input type="text" class="form-control cyber-input" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label mono small">Email</label>
+                                <input type="email" class="form-control cyber-input" id="email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="subject" class="form-label mono small">Subject</label>
+                            <input type="text" class="form-control cyber-input" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="message" class="form-label mono small">Message</label>
+                            <textarea class="form-control cyber-input" id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <div class="text-end">
+                            <button type="submit" class="btn cyber-button">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 footer-border">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <a href="#hero" class="text-decoration-none fs-4 fw-bold logo-text mono">Jishan's</a>
+                    <p class="mt-2 small opacity-75 mb-0">Crafting digital experiences through code.</p>
+                </div>
+                
+                <div class="col-lg-4 text-center mb-3 mb-lg-0">
+                    <div class="d-flex justify-content-center gap-4">
+                        <a href="https://github.com/patel-Jishan" target="_blank" class="text-decoration-none text-custom fs-5">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/jishan-patel-224204368/" target="_blank" class="text-decoration-none text-custom fs-5">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="text-decoration-none text-custom fs-5">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/_jishan_patel?igsh=NjhzMzRjNzBtaTZr&utm_source=qr"
+                        target="_blank" class="text-decoration-none text-custom fs-5">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 text-lg-end text-center">
+                    <div class="small opacity-75">
+                        &copy; 2025 Jishan Patel. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script id="app-script">
+        // pointer
+$(window).mousemove(function (e) {
+	$(".ring").css(
+		"transform",
+		`translateX(calc(${e.clientX}px - 1.25rem)) translateY(calc(${e.clientY}px - 1.25rem))`
+	);
+});
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const body = document.body;
+            
+            // Check for saved theme preference or use default
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                body.className = savedTheme;
+                updateThemeIcon(savedTheme === 'light-mode');
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const isLightMode = body.classList.contains('light-mode');
+                body.className = isLightMode ? 'dark-mode' : 'light-mode';
+                localStorage.setItem('theme', body.className);
+                updateThemeIcon(!isLightMode);
+            });
+            
+            function updateThemeIcon(isLightMode) {
+                themeIcon.className = isLightMode ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Account for fixed navbar height
+                        const offsetTop = targetElement.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu after clicking (Bootstrap handles this automatically)
+                        const navbarCollapse = document.querySelector('.navbar-collapse');
+                        if (navbarCollapse.classList.contains('show')) {
+                            bootstrap.Collapse.getInstance(navbarCollapse).hide();
+                        }
+                    }
+                });
+            });
+            
+            // Form validation
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Basic validation
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const subject = document.getElementById('subject').value;
+                    const message = document.getElementById('message').value;
+                    
+                    if (!name || !email || !subject || !message) {
+                        alert('Please fill in all fields.');
+                        return;
+                    }
+                    
+                    if (!isValidEmail(email)) {
+                        alert('Please enter a valid email address.');
+                        return;
+                    }
+                    
+                    // Show success message (in a real app, this would send data to server)
+                    alert('Thank you for your message! This is a prototype, so no data was sent.');
+                    contactForm.reset();
+                });
+            }
+            
+            function isValidEmail(email) {
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return regex.test(email);
+            }
+            
+            // Resume link handling
+            document.getElementById('resume-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('This is a prototype. In a real app, this would download a resume PDF.');
+            });
+            
+            // Three.js background
+            initThreeBackground();
+            
+            // Add scroll reveal animations
+            window.addEventListener('scroll', revealElements);
+            revealElements();
+            
+            // Navbar background on scroll
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.backgroundColor = 'rgba(5, 10, 20, 0.95)';
+                } else {
+                    navbar.style.backgroundColor = 'rgba(5, 10, 20, 0.9)';
+                }
+            });
+        });
+        
+        function initThreeBackground() {
+            const canvas = document.getElementById('background-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                alpha: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            // Create grid
+            const size = 50;
+            const divisions = 50;
+            const gridHelper = new THREE.GridHelper(size, divisions, 0x00ffff, 0x00ffff);
+            scene.add(gridHelper);
+            
+            // Particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 2000;
+            
+            const posArray = new Float32Array(particlesCount * 3);
+            
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 50;
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.1,
+                color: 0x00ffff
+            });
+            
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+            
+            // Camera position
+            camera.position.z = 30;
+            camera.position.y = 5;
+            camera.rotation.x = -Math.PI / 16;
+            
+            // Animation
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                gridHelper.position.z += 0.05;
+                if (gridHelper.position.z > 1) {
+                    gridHelper.position.z = 0;
+                }
+                
+                particlesMesh.rotation.y += 0.001;
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle resize
+            window.addEventListener('resize', function() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        function revealElements() {
+            const revealElements = document.querySelectorAll('.project-card, .skill-bar, h2, h3');
+            
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementBottom = element.getBoundingClientRect().bottom;
+                
+                // Element is in viewport
+                if (elementTop < window.innerHeight - 100 && elementBottom > 0) {
+                    element.classList.add('opacity-100');
+                    element.style.transform = 'translateY(0)';
+                    element.style.opacity = '1';
+                    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                } else {
+                    if (!element.classList.contains('opacity-100')) {
+                        element.style.transform = 'translateY(20px)';
+                        element.style.opacity = '0';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
