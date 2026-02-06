@@ -16,6 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <!-- ajax particles -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    
     <style id="app-style">
         :root {
             --neon-primary: #0ff;
@@ -1051,32 +1053,43 @@
                 </div>
                 
                 <div class="col-lg-6">
-                    <form id="contact-form">
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label for="name" class="form-label mono small">Name</label>
-                                <input type="text" class="form-control cyber-input" id="name" name="name" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email" class="form-label mono small">Email</label>
-                                <input type="email" class="form-control cyber-input" id="email" name="email" required>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="subject" class="form-label mono small">Subject</label>
-                            <input type="text" class="form-control cyber-input" id="subject" name="subject" required>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="message" class="form-label mono small">Message</label>
-                            <textarea class="form-control cyber-input" id="message" name="message" rows="5" required></textarea>
-                        </div>
-                        
-                        <div class="text-end">
-                            <button type="submit" class="btn cyber-button">Send Message</button>
-                        </div>
-                    </form>
+                    <form 
+  id="contact-form"
+  action="https://api.web3forms.com/submit"
+  method="POST"
+>
+
+  <input type="hidden" name="access_key" value="5ae71307-5d8f-4a63-ab26-bcac6f416803">
+  <input type="hidden" name="subject" value="New Contact from Portfolio">
+  <input type="checkbox" name="botcheck" style="display:none;">
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <label for="name" class="form-label mono small">Name</label>
+      <input type="text" class="form-control cyber-input" id="name" name="name" required>
+    </div>
+    <div class="col-md-6">
+      <label for="email" class="form-label mono small">Email</label>
+      <input type="email" class="form-control cyber-input" id="email" name="email" required>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="subject" class="form-label mono small">Subject</label>
+    <input type="text" class="form-control cyber-input" id="subject" name="subject" required>
+  </div>
+
+  <div class="mb-4">
+    <label for="message" class="form-label mono small">Message</label>
+    <textarea class="form-control cyber-input" id="message" name="message" rows="5" required></textarea>
+  </div>
+
+  <div class="text-end">
+    <button type="submit" class="btn cyber-button">Send Message</button>
+  </div>
+
+</form>
+
                 </div>
             </div>
         </div>
@@ -1177,37 +1190,45 @@ $(window).mousemove(function (e) {
             });
             
             // Form validation
-            const contactForm = document.getElementById('contact-form');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    // Basic validation
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const subject = document.getElementById('subject').value;
-                    const message = document.getElementById('message').value;
-                    
-                    if (!name || !email || !subject || !message) {
-                        alert('Please fill in all fields.');
-                        return;
-                    }
-                    
-                    if (!isValidEmail(email)) {
-                        alert('Please enter a valid email address.');
-                        return;
-                    }
-                    
-                    // Show success message (in a real app, this would send data to server)
-                    alert('Thank you for your message! This is a prototype, so no data was sent.');
-                    contactForm.reset();
-                });
-            }
-            
-            function isValidEmail(email) {
-                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return regex.test(email);
-            }
+         document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    formData.append("access_key", "5ae71307-5d8f-4a63-ab26-bcac6f416803");
+
+    submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        alert("✅ Message sent successfully!");
+      } else {
+        alert("❌ Something went wrong");
+      }
+
+    } catch {
+      alert("⚠️ Network error");
+    } finally {
+      // ✅ FORM WILL ALWAYS CLEAR
+      form.reset();
+      submitBtn.textContent = "Send Message";
+      submitBtn.disabled = false;
+    }
+  });
+});
+
+
             
             // Resume link handling
             document.getElementById('resume-link').addEventListener('click', function(e) {
