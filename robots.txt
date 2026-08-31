@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jishanpatel.vercel.app/sitemap.xml
